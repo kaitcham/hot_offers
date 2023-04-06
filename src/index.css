@@ -1,3 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-Poppins;
+  }
+
+  .navLink {
+    @apply flex items-center px-10 py-3 text-lg font-medium capitalize text-slate-700 hover:bg-slate-50 hover:text-xl;
+  }
+
+  .navLinkActive {
+    @apply bg-slate-50 text-red-900;
+  }
+}
