@@ -2,7 +2,14 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        Poppins: ['Poppins', 'sans-serif'],
+      },
+      backgroundImage: {
+        heroImage: 'url(./src/assets/heroImage.jpg)',
+      },
+    },
   },
   plugins: [],
 };
