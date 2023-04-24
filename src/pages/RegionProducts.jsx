@@ -18,9 +18,9 @@ const RegionProducts = () => {
             </span>
           </p>
         </div>
-        <button className="bg-white border border-solid border-black rounded-md px-7 py-1 hover:bg-[#A20000] hover:text-white hover:border-transparent">
+        <Link to="/login" className="bg-white border border-solid border-black rounded-md px-7 py-1 hover:bg-[#A20000] hover:text-white hover:border-transparent">
           Login / Register
-        </button>
+        </Link>
       </div>
       <div className="flex justify-between items-center border-b px-10">
         <ul className="flex justify-around w-full [&>li]:p-4 [&>li]:cursor-pointer [&>li:hover]:border-b-[6px] [&>li:hover]:border-black">
