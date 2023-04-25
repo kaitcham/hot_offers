@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { BiChevronDown } from 'react-icons/bi';
+import { Link, useParams, useLocation } from 'react-router-dom';
 
 const RegionProducts = () => {
   const { region } = useParams();
+  const { pathname } = useLocation();
+
   return (
     <div className="bg-slate-50">
       <div className="flex justify-between items-center border-b px-10">
@@ -18,7 +20,11 @@ const RegionProducts = () => {
             </span>
           </p>
         </div>
-        <Link to="/login" className="bg-white border border-solid border-black rounded-md px-7 py-1 hover:bg-[#A20000] hover:text-white hover:border-transparent">
+        <Link
+          to="/login"
+          state={{ previousPath: pathname }}
+          className="bg-white border border-solid border-black rounded-md px-7 py-1 hover:bg-[#A20000] hover:text-white hover:border-transparent"
+        >
           Login / Register
         </Link>
       </div>
