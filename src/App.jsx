@@ -1,12 +1,13 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/dashboard";
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Dashboard from './pages/dashboard';
 import {
   LandingPage,
   RegionProducts,
   LoginPage,
   ResetPasswordPage,
-} from "./pages/_index.jsx";
+  ForgotPasswordPage,
+} from './pages/_index.jsx';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
         <Route path="/resetPassword" element={<ResetPasswordPage />} />
         <Route path="dashboard" element={<Dashboard />}>
           <Route index element={<h1>Dashboard Page</h1>} />
