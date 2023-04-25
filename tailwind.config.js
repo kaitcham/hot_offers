@@ -8,6 +8,8 @@ export default {
       },
       backgroundImage: {
         heroImage: 'url(./src/assets/heroImage.jpg)',
+        spinner:
+          'conic-gradient(from 90deg at 50% 50%, #A20000 0deg, rgba(162, 0, 0, 0.08) 360deg)',
       },
     },
   },
