@@ -1,61 +1,68 @@
 import { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
+import { Outlet } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
-import { Link, NavLink, Outlet } from 'react-router-dom';
-import logo from '../../assets/logo.png';
-import noProfileImage from '../../assets/no-profile.jpg';
-import links from '../../utils/DashboardLinks';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleAside } from '../../features/appSlice';
+import DashboardAside from '../../components/DashboardAside';
 
 const index = () => {
-  const [aside, setAside] = useState(true);
-  const [role, setRole] = useState('admin');
-  const [profileImage] = useState(false);
+  const dispatch = useDispatch();
+  const { aside } = useSelector((state) => state.app);
+  const [profileImage, setProfileImage] = useState(false);
+
+  const setAside = () => {
+    dispatch(toggleAside());
+  };
+
+  const uploadProfile = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setProfileImage(reader.result);
+    };
+  };
 
   return (
     <div className=" bg-slate-100 relative flex">
-      {aside && (
-        <div className="sticky top-0 left-0 h-screen w-1/4 flex flex-col">
-          <div className="h-[69px] flex justify-center items-center">
-            <Link to="/dashboard">
-              <img src={logo} alt="logo" className="-translate-x-2" />
-            </Link>
-          </div>
-          <div className=" flex-1 border-r">
-            <ul className="pt-10">
-              {links.map((link) => {
-                const { id, name, path, icon } = link;
-                if (role !== 'admin' && (id === 1 || id === 2)) return null;
-                return (
-                  <li key={id}>
-                    <NavLink
-                      to={path}
-                      className={({ isActive }) =>
-                        isActive ? 'navLink navLinkActive' : 'navLink'
-                      }
-                    >
-                      {icon}
-                      <span className="ml-3">{name}</span>
-                    </NavLink>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
-      )}
+      {aside && <DashboardAside />}
       <div className="bg-slate-50 flex-1 h-screen">
         <div className="bg-slate-100 flex justify-between items-center h-[70px] px-5 border-b">
-          <button onClick={() => setAside(!aside)}>
+          <button onClick={setAside}>
             {aside ? <BsArrowLeft size={24} /> : <FaBars size={24} />}
           </button>
-          <div>
-            <div className="">
-              <img
-                src={profileImage ? profileImage : noProfileImage}
-                alt="profile"
-                className="w-12 h-12 rounded-full object-cover"
-              />
-            </div>
+          <div className="">
+            <label htmlFor="profile" className="cursor-pointer">
+              {profileImage ? (
+                <img
+                  src={profileImage}
+                  alt="profile"
+                  className="w-14 h-14 rounded-full object-cover"
+                />
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-14 h-14"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
+            </label>
+            <input
+              type="file"
+              id="profile"
+              name="profile"
+              accept="image/*"
+              className="hidden"
+              onChange={uploadProfile}
+            />
           </div>
         </div>
         <div className="px-5 pt-5">
