@@ -1,6 +1,8 @@
 import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from './pages/dashboard';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   LandingPage,
   RegionProducts,
@@ -12,6 +14,7 @@ import {
 const App = () => {
   return (
     <BrowserRouter>
+      <ToastContainer position="top-center" autoClose={3000} closeOnClick />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
