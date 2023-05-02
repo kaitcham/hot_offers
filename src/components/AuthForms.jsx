@@ -1,14 +1,17 @@
-import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AuthForms = ({
+  user,
   error,
   dispatch,
   isMember,
   createMember,
   setIsMember,
+  loginMember,
 }) => {
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     firstName: '',
     lastName: '',
@@ -20,15 +23,6 @@ const AuthForms = ({
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginData({ ...loginData, [name]: value });
-  };
-
-  const handleLoginMember = () => {
-    const { email, password } = loginData;
-    if (!email || !password) {
-      toast.error('Please fill all the fields');
-      return;
-    }
-    console.log(email, password);
   };
 
   const handleCreateMember = () => {
@@ -47,14 +41,25 @@ const AuthForms = ({
     }
 
     dispatch(createMember(loginData));
-    console.log(loginData);
+  };
+
+  const handleLoginMember = () => {
+    const { email, password } = loginData;
+    if (!email || !password) {
+      toast.error('Please fill all the fields');
+      return;
+    }
+    dispatch(loginMember({ email, password }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     isMember ? handleLoginMember() : handleCreateMember();
-    console.log(loginData);
   };
+
+  useEffect(() => {
+    Object.keys(user).length ? navigate('/dashboard') : navigate('/login');
+  }, [user]);
 
   return (
     <form className="pt-8" onSubmit={handleSubmit}>
@@ -93,7 +98,7 @@ const AuthForms = ({
             </div>
           </>
         )}
-        <div className={`${!error?.email ? 'mb-5' : 'mb-1'}`}>
+        <div className={`${error?.email ? 'mb-1' : 'mb-5'}`}>
           <input
             type="email"
             name="email"
@@ -108,7 +113,7 @@ const AuthForms = ({
             <span className="text-xs text-red-700">{error.email}</span>
           )}
         </div>
-        <div className={`${!error?.password1 ? 'mb-5' : 'mb-1'} `}>
+        <div className={`${error?.password1 ? 'mb-1' : 'mb-5'} `}>
           <input
             type="password"
             name="password"
