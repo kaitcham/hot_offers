@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { createMember } from '../../features/auth/authSlice';
+import { createMember, loginMember } from '../../features/auth/authSlice';
 import { setIsMember, setPreviousPath } from '../../features/appSlice';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import AuthForms from '../../components/AuthForms';
@@ -10,7 +10,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const { state } = useLocation();
   const { isMember } = useSelector((state) => state.app);
-  const { status, error } = useSelector((state) => state.auth);
+  const { status, error, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(setPreviousPath(state?.previousPath));
@@ -53,11 +53,13 @@ const LoginPage = () => {
               <div className="bg-red-800 h-0.5 w-4/5 mx-auto" />
             </div>
             <AuthForms
+              user={user}
               error={error}
               dispatch={dispatch}
               isMember={isMember}
               setIsMember={setIsMember}
               createMember={createMember}
+              loginMember={loginMember}
             />
           </>
         )}
