@@ -25,10 +25,10 @@ const index = () => {
   };
 
   return (
-    <div className=" bg-slate-100 relative flex">
+    <div className=" bg-slate-200 relative flex">
       {aside && <DashboardAside />}
       <div className="bg-slate-50 flex-1 h-screen">
-        <div className="bg-slate-100 flex justify-between items-center h-[70px] px-5 border-b">
+        <div className="bg-slate-200 flex justify-between items-center h-[70px] px-5 border-b">
           <button onClick={setAside}>
             {aside ? <BsArrowLeft size={24} /> : <FaBars size={24} />}
           </button>

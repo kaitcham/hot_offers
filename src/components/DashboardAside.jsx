@@ -10,7 +10,7 @@ const DashboardAside = () => {
     <div className="sticky top-0 left-0 h-screen w-1/4 flex flex-col">
       <div className="h-[69px] flex justify-center items-center">
         <Link to="/dashboard">
-          <img src={logo} alt="logo" className="-translate-x-2" />
+          <img src={logo} alt="logo" className=" w-[90%]" />
         </Link>
       </div>
       <div className=" flex-1 border-r">
