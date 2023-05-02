@@ -16,3 +16,17 @@ export const createMemberThunk = async (loginData, thunkApi) => {
     return thunkApi.rejectWithValue(error.response.data);
   }
 };
+
+export const loginMemberThunk = async (loginData, thunkApi) => {
+  try {
+    const { email, password } = loginData;
+    const response = await customBaseUrl.post('/signin', {
+      username: email,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error.response.data);
+    return thunkApi.rejectWithValue(error.response.data);
+  }
+};
