@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { createMember, loginMember } from '../../features/auth/authSlice';
 import { setIsMember, setPreviousPath } from '../../features/appSlice';
 import LoadingSpinner from '../../utils/LoadingSpinner';
@@ -8,7 +8,9 @@ import AuthForms from '../../components/AuthForms';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { state } = useLocation();
+  const formHeight = useRef(null);
   const { isMember } = useSelector((state) => state.app);
   const { status, error, user } = useSelector((state) => state.auth);
 
@@ -16,17 +18,19 @@ const LoginPage = () => {
     dispatch(setPreviousPath(state?.previousPath));
   }, [state]);
 
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user]);
+
   return (
     <div className="bg-gray-100 h-screen flex justify-center items-center">
       <div
-        className={` ${
-          status === 'loading' && 'flex justify-center items-center'
-        } bg-white border border-transparent shadow-xl rounded-md px-5 py-4 w-full max-w-md relative`}
+        className={`bg-white relative shadow-xl rounded-md px-5 py-4 w-full max-w-md`}
       >
-        {status === 'loading' ? (
-          <LoadingSpinner />
-        ) : (
-          <>
+        {!status || status === 'failed' ? (
+          <div ref={formHeight}>
             <div className="absolute top-0 right-0 p-2 bg-red-900">
               <Link
                 to={state?.previousPath}
@@ -53,7 +57,6 @@ const LoginPage = () => {
               <div className="bg-red-800 h-0.5 w-4/5 mx-auto" />
             </div>
             <AuthForms
-              user={user}
               error={error}
               dispatch={dispatch}
               isMember={isMember}
@@ -61,7 +64,14 @@ const LoginPage = () => {
               createMember={createMember}
               loginMember={loginMember}
             />
-          </>
+          </div>
+        ) : (
+          <div
+            className="flex justify-center items-center"
+            style={{ height: `${formHeight.current?.clientHeight}px` }}
+          >
+            <LoadingSpinner />
+          </div>
         )}
       </div>
     </div>
