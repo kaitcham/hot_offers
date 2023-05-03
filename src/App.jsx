@@ -4,9 +4,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from './pages/dashboard';
 import 'react-toastify/dist/ReactToastify.css';
 import {
-  LandingPage,
-  RegionProducts,
   LoginPage,
+  LandingPage,
+  ProtectedPage,
+  RegionProducts,
   ResetPasswordPage,
   ForgotPasswordPage,
 } from './pages/_index.jsx';
@@ -20,7 +21,14 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
         <Route path="/resetPassword" element={<ResetPasswordPage />} />
-        <Route path="dashboard" element={<Dashboard />}>
+        <Route
+          path="dashboard"
+          element={
+            <ProtectedPage>
+              <Dashboard />
+            </ProtectedPage>
+          }
+        >
           <Route index element={<h1>Dashboard Page</h1>} />
           <Route path="stats" element={<h1>Stats Page</h1>} />
           <Route path="users" element={<h1>List of all Users</h1>} />
