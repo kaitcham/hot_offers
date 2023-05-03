@@ -1,9 +1,8 @@
 import { toast } from 'react-toastify';
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const AuthForms = ({
-  user,
   error,
   dispatch,
   isMember,
@@ -11,7 +10,6 @@ const AuthForms = ({
   setIsMember,
   loginMember,
 }) => {
-  const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     firstName: '',
     lastName: '',
@@ -54,12 +52,12 @@ const AuthForms = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    isMember ? handleLoginMember() : handleCreateMember();
+    if (isMember) {
+      handleLoginMember();
+    } else {
+      handleCreateMember();
+    }
   };
-
-  useEffect(() => {
-    Object.keys(user).length ? navigate('/dashboard') : navigate('/login');
-  }, [user]);
 
   return (
     <form className="pt-8" onSubmit={handleSubmit}>
@@ -98,7 +96,9 @@ const AuthForms = ({
             </div>
           </>
         )}
-        <div className={`${error?.email ? 'mb-1' : 'mb-5'}`}>
+        <div
+          className={`${error?.email ? 'mb-1' : isMember ? 'mb-6' : 'mb-5'}`}
+        >
           <input
             type="email"
             name="email"
