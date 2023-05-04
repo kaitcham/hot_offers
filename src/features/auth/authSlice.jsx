@@ -1,9 +1,14 @@
 import { toast } from 'react-toastify';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { createMemberThunk, loginMemberThunk } from './authThunk';
+import {
+  createMemberThunk,
+  loginMemberThunk,
+  signoutMemberThunk,
+} from './authThunk';
 import {
   addUserToLocalStorage,
   getUserFromLocalStorage,
+  removeUserFromLocalStorage,
 } from '../../utils/localStorage';
 
 const initialState = {
@@ -20,6 +25,11 @@ export const createMember = createAsyncThunk(
 export const loginMember = createAsyncThunk(
   'auth/loginMember',
   loginMemberThunk
+);
+
+export const signoutMember = createAsyncThunk(
+  'auth/signoutMember',
+  signoutMemberThunk
 );
 
 const authSlice = createSlice({
@@ -54,6 +64,19 @@ const authSlice = createSlice({
       non_field_errors
         ? toast.error(non_field_errors[0])
         : toast.error(action.payload.message);
+    });
+    builder.addCase(signoutMember.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(signoutMember.fulfilled, (state) => {
+      state.status = '';
+      state.user = null;
+      removeUserFromLocalStorage();
+      toast.success('Logout successful');
+    });
+    builder.addCase(signoutMember.rejected, (state, action) => {
+      state.status = 'failed';
+      toast.error(action.payload?.detail);
     });
   },
 });
