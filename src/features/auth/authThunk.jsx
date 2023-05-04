@@ -26,7 +26,15 @@ export const loginMemberThunk = async (loginData, thunkApi) => {
     });
     return response.data;
   } catch (error) {
-    console.log(error.response.data);
+    return thunkApi.rejectWithValue(error.response.data);
+  }
+};
+
+export const signoutMemberThunk = async (_, thunkApi) => {
+  try {
+    const response = await customBaseUrl.post('/signout');
+    return response.data;
+  } catch (error) {
     return thunkApi.rejectWithValue(error.response.data);
   }
 };
