@@ -7,7 +7,7 @@ import heroImage from '../assets/heroImage.jpg';
 const LandingPage = () => {
   return (
     <div>
-      <div className="flex justify-between items-center px-8 py-5">
+      <div className="flex justify-between items-center px-8 py-3.5">
         <img src={logo} alt="logo" />
         <p>English</p>
       </div>
@@ -15,7 +15,7 @@ const LandingPage = () => {
         <div className="relative">
           <img src={heroImage} alt="heroImage" className=" w-full h-[405px]" />
           <div className="bg-[#a2000078] absolute top-0 left-0 w-full h-full flex flex-col justify-center text-center">
-            <h3 className="text-slate-50 text-5xl mb-8 -translate-y-10">
+            <h3 className="text-slate-50 text-5xl mb-4 -translate-y-12">
               Welcome to the Rwanda #1 <br />
               <span className="text-4xl">online classifieds website!</span>
             </h3>
