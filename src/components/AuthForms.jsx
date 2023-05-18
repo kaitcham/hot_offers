@@ -143,7 +143,8 @@ const AuthForms = ({
         </div>
       ) : (
         <p className="text-xs text-gray-400">
-          Password must be atleast 8 characters
+          Password must be atleast 8 characters. With at-least 1 Uppercase
+          letter, 1 Lowercase letter, 1 Number and 1 Special character.
         </p>
       )}
       <button
