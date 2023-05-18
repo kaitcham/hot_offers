@@ -1,4 +1,4 @@
-import { setIsMember } from '../appSlice';
+import { setAccountMessage } from '../appSlice';
 import customBaseUrl from '../../utils/axios';
 
 export const createMemberThunk = async (loginData, thunkApi) => {
@@ -11,7 +11,7 @@ export const createMemberThunk = async (loginData, thunkApi) => {
       password1: password,
       password2: confirmPassword,
     });
-    thunkApi.dispatch(setIsMember(true));
+    thunkApi.dispatch(setAccountMessage());
   } catch (error) {
     return thunkApi.rejectWithValue(error.response.data);
   }

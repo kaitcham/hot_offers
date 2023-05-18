@@ -41,8 +41,7 @@ const authSlice = createSlice({
       state.status = 'loading';
     });
     builder.addCase(createMember.fulfilled, (state, action) => {
-      state.status = 'success';
-      toast.success('Account created successfully');
+      state.status = '';
     });
     builder.addCase(createMember.rejected, (state, action) => {
       state.status = 'failed';
