@@ -1,35 +1,81 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { createMember, loginMember } from '../../features/auth/authSlice';
-import { setIsMember, setPreviousPath } from '../../features/appSlice';
+import {
+  setIsMember,
+  setPreviousPath,
+  setAccountMessage,
+} from '../../features/appSlice';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import AuthForms from '../../components/AuthForms';
+import logo from '../../assets/logo.png';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { state } = useLocation();
   const formHeight = useRef(null);
-  const { isMember } = useSelector((state) => state.app);
   const { status, error, user } = useSelector((state) => state.auth);
+  const { isMember, previousPath, accountMessage } = useSelector(
+    (state) => state.app
+  );
+
+  const handleMessage = () => {
+    dispatch(setAccountMessage());
+    dispatch(setIsMember(true));
+  };
 
   useEffect(() => {
-    dispatch(setPreviousPath(state?.previousPath));
-  }, [state]);
+    if (previousPath) {
+      dispatch(setPreviousPath(previousPath));
+    } else {
+      dispatch(setPreviousPath(state?.previousPath));
+    }
+  }, [previousPath, state]);
 
   useEffect(() => {
     if (user) {
       navigate('/dashboard');
+    } else if (accountMessage) {
+      setTimeout(() => {
+        handleMessage();
+      }, 4000);
     }
-  }, [user]);
+  }, [user, accountMessage, navigate]);
 
   return (
-    <div className="bg-gray-100 h-screen flex justify-center items-center">
+    <div className="bg-gray-100 h-screen grid grid-cols-3">
+      <div className="pl-8 pt-4">
+        <Link
+          to={previousPath || '/'}
+          onClick={() => dispatch(setIsMember(true))}
+        >
+          <img src={logo} alt="logo" />
+        </Link>
+      </div>
+      <div className="order-1 justify-self-end pr-8 pt-4" />
       <div
-        className={`bg-white relative shadow-xl rounded-md px-5 py-4 w-full max-w-md`}
+        className={`bg-white relative shadow-xl rounded-md px-5 py-4 w-full max-w-md h-fit my-auto`}
       >
-        {!status || status === 'failed' ? (
+        {accountMessage ? (
+          <div
+            className="flex flex-col justify-center items-center"
+            style={{ height: `${formHeight.current?.clientHeight}px` }}
+          >
+            <p className="text-center text-red-800 mb-10">
+              Account created successfully. <br /> Please check your email to
+              activate your account.
+            </p>
+            <Link
+              to="/login"
+              onClick={handleMessage}
+              className="px-6 py-2 bg-red-700 rounded-md"
+            >
+              Okay
+            </Link>
+          </div>
+        ) : !status || status === 'failed' ? (
           <div ref={formHeight}>
             <div className="absolute top-0 right-0 p-2 bg-red-900">
               <Link
