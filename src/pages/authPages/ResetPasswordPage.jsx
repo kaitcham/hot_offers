@@ -8,32 +8,30 @@ const resetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match');
+    }
     try {
-      const respone = await axios.post(
-        'https://hotoffers-backend-production.up.railway.app/api/change-password/',
+      const res = await axios.post(
+        'https://hotoffers-backend-production.up.railway.app/api/change_password',
         {
-          token: token,
+          token: `'${token}'`,
           password1: password,
           password2: confirmPassword,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
         }
       );
-
-      if (respone.status === 200) {
+      if (res.status === 200) {
         window.location.href = '/login';
-        toast.success('Password reset successfully');
+        toast.success('Password reset successful');
       }
     } catch (error) {
-      toast.error('Something went wrong');
+      toast.error(error.response.data.detail);
     }
   };
 
   useEffect(() => {
     setToken(window.location.href.split('=').pop());
+    console.log(token);
   }, []);
 
   return (
@@ -47,7 +45,6 @@ const resetPassword = () => {
             <input
               type="password"
               name="password"
-              id="password"
               placeholder="Create password"
               className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               required
@@ -58,7 +55,6 @@ const resetPassword = () => {
             <input
               type="password"
               name="password"
-              id="password"
               placeholder="Confirm password"
               className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               required
