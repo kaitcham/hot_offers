@@ -15,7 +15,7 @@ const resetPassword = () => {
       const res = await axios.post(
         'https://hotoffers-backend-production.up.railway.app/api/change_password',
         {
-          token: `'${token}'`,
+          token: `${token}`,
           password1: password,
           password2: confirmPassword,
         }
