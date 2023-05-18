@@ -137,7 +137,7 @@ const AuthForms = ({
               Remember me
             </label>
           </span>
-          <Link to="/forgotPassword" className="text-sm text-red-800">
+          <Link to="/forget-password" className="text-sm text-red-800">
             Forgot Password?
           </Link>
         </div>
