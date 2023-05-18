@@ -1,9 +1,10 @@
-import { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { Outlet } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleAside } from '../../features/appSlice';
+import { setPreviousPath } from '../../features/appSlice';
 import DashboardAside from '../../components/DashboardAside';
 import DashboardSettings from '../../components/DashboardSettings';
 
@@ -11,6 +12,7 @@ const index = () => {
   const dispatch = useDispatch();
   const { aside } = useSelector((state) => state.app);
   const [profileImage, setProfileImage] = useState(false);
+  const { previousPath } = useSelector((state) => state.app);
 
   const setAside = () => {
     dispatch(toggleAside());
@@ -24,6 +26,10 @@ const index = () => {
       setProfileImage(reader.result);
     };
   };
+
+  useEffect(() => {
+    dispatch(setPreviousPath(previousPath));
+  }, []);
 
   return (
     <div className=" bg-slate-200 relative flex">

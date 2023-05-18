@@ -1,8 +1,12 @@
 import { Fragment } from 'react';
+import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
 import { Cog6ToothIcon } from '@heroicons/react/24/outline';
 import { signoutMember } from '../features/auth/authSlice.jsx';
+import customBaseUrl from '../utils/axios.jsx';
+import { removeUserFromLocalStorage } from '../utils/localStorage.jsx';
 
 const settingsLinks = [{ id: 1, name: 'Profile', href: '#' }];
 
@@ -11,9 +15,23 @@ function classNames(...classes) {
 }
 
 export default function Example() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSignOut = () => {
     dispatch(signoutMember());
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      const response = await customBaseUrl.delete('/delete-account');
+      if (response.status === 200) {
+        removeUserFromLocalStorage();
+        navigate('/login');
+        toast.success('Account deleted successfully');
+      }
+    } catch (error) {
+      toast.error('Error deleting account');
+    }
   };
 
   return (
@@ -59,6 +77,20 @@ export default function Example() {
                   )}
                 >
                   Sign out
+                </button>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <button
+                  onClick={handleDeleteAccount}
+                  type="button"
+                  className={classNames(
+                    active ? 'bg-red-700 text-white' : 'text-red-800',
+                    'block w-full px-4 py-2 text-left text-sm'
+                  )}
+                >
+                  Delete Account
                 </button>
               )}
             </Menu.Item>
